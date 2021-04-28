@@ -167,14 +167,14 @@ $url-image: "./img/image.png";
 - SCSS에서 변수는 선언된 블록 {} 내에서만 유효범위를 가진다. 
 - 유효범위 예시
     - 아래의 경우 .box 내서 선언한 변수 color가 .box2에서 다시 한번 등장한다. 이 경우 변수 color가 선언된 위치가 .box2외부이기 때문에 오류가 발생한다.  
-    <img src="./assets/12-1.png" width="300" />
+    <img src="./assets/12-1.png" width="450" />
 
     - 다음과 같이 사용하는 것이 올바른 사용 예시이다.  
-    <img src="./assets/12-2.png" width="300" />
+    <img src="./assets/12-2.png" width="450" />
 
 - 또한, 변수는 재할당이 가능하다.
     - 아래의 경우 변수 black이 먼저 선언되어있고, color-primary에 black을 재할당하고 있다. 올바른 문법으로 정상 동작한다.  
-    <img src="./assets/12-3.png" width="300" />
+    <img src="./assets/12-3.png" width="450" />
 
 
 ## 변수 - 전역설정
@@ -182,30 +182,30 @@ $url-image: "./img/image.png";
 - `!global` 키워드를 사용하여 변수의 유효범위를 전역(Global)으로 설정한다.
 - [변수의 유효범위](#변수의-유효범위)에서 나온 첫번째 예제에서 유효범위에 의한 문법 오류를 확인했었다. 이곳에 !global 키워드를 넣게 되면 어떻게 될까?
     - 코드  
-    <img src="./assets/13-1.png" width="300" />
+    <img src="./assets/13-1.png" width="450" />
 
     - 결과: 정상 작동함을 확인할 수 있다.  
-    <img src="./assets/13-2.png" width="300" />
+    <img src="./assets/13-2.png" width="450" />
 
 - 이때, 주의해야할 점이 존재한다. 다음 두가지 예시를 보자.
     - 첫번째 예시
         - 다음 예시는 1번째 줄에서 color가 전역으로 선언되고 9번째 줄에서 다시 한번 전역으로 선언되는 코드이다.  
-        <img src="./assets/13-3.png" width="300" />
+        <img src="./assets/13-3.png" width="450" />
 
         - 결과는 다음과 같다. 위에 존재하는 가장 가까운 위치의 전역 변수로 사용되게 된다. 다른 예시도 확인해보자.  
-        <img src="./assets/13-4.png" width="300" />
+        <img src="./assets/13-4.png" width="450" />
 
     - 두번째 예시
         - 첫번째 예시의 4번째 줄과 5번째 줄 순서를 바꾸면 어떻게 될까?
         - 다음과 같이 가장 위에 있는 전역변수를 찾아가므로 #111이 아닌 #ccc 값을 가진다.  
-        <img src="./assets/13-7.png" width="300" />
+        <img src="./assets/13-7.png" width="450" />
 
     - 세번째 예시
         - 이번에는 .box3을 가장 아래로 보내보았다.  
-        <img src="./assets/13-5.png" width="300" />
+        <img src="./assets/13-5.png" width="450" />
         
         - 결과는 다음곽 같다. box3의 위에 존재하는 가장 가까운 전역 변수는 4번째 줄에 선언되어 있는 전역 변수이기 때문에 #111이 나오게 된다.  
-        <img src="./assets/13-6.png" width="300" />
+        <img src="./assets/13-6.png" width="450" />
 
     
 ## 초기값 설정, 문자 보간
@@ -213,12 +213,12 @@ $url-image: "./img/image.png";
     - !default 플래그는 할당되지 않은 변수의 초기값을 설정한다.
     - 만약 기존 변수가 존재할 경우 현재 설정하는 사용하지 않고 기존 값을 사용할 수 있다. 그렇기 때문에 외부 라이브러리를 사용하더라도 내가 작성한 변수가 기존 코드를 덮어쓰기할 위험성이 적어진다.
     - 아래에서 4번째 줄의 변수 color가 blue가 아닌 red가 할당됨을 확인할 수 있다.  
-    <img src="./assets/14-1.png" width="300" />
+    <img src="./assets/14-1.png" width="450" />
 
 - #{}(문자보간)
     - 특정 변수를 #{}를 사용해 코드 어디서든 사용할 수 있다.
     - 다음과 같이 색상도 조합 가능하다.  
-    <img src="./assets/14-2.png" width="300" />
+    <img src="./assets/14-2.png" width="450" />
 
 ## 가져오기(Import)
 - 기존 css와 마찬가지로 `@import`를 사용하여 다른 Sass파일을 연결시킬 수 있다. 하지만 문법과 작동 방식이 다르다.
