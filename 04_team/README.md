@@ -378,5 +378,37 @@ $count: 6;
 - 크게 color함수, number함수, string함수, list함수, map함수가 있습니다.
 
 ## color함수
+- mix(color1, color2): 두개의 색을 혼합한 색을 반환합니다.
+```SCSS
+mix(#f00, #00f)      // #7f007f
+mix(#f00, #00f, 25%) // #3f00bf
+mix(rgba(255, 0, 0, 0.5), #00f) // rgba(63, 0, 191, 0.75)
+```
+## number함수
+- round(number1): 소수점 이하 반올림
+```SCSS
+round(4.1px) // 4px
+round(16.8px) // 17px
+```
+## string 함수 
+- str-slice($string, $start-at, [$end-at]) : 문자에서 특정 문자(몇 번째 글자부터 몇 번째 글자까지)를 추출합니다.
+```SCSS
+string.slice("Helvetica Neue", 11); // "Neue"
+string.slice("Helvetica Neue", 1, 3); // "Hel"
+string.slice("Helvetica Neue", 1, -6); // "Helvetica"
+```
+## list함수
+- index($list, $value): 두 번째 인자로 전달된 값이 리스트의 몇 번째 요소에 있는지 확인한다.
+```SCSS
+index(1px solid red, solid)                       // 2
+index(1px solid red, dashed)                      // null
+index((width: 10px, height: 20px), (height 20px)) // 2
+```
 
+## map함수
+- map-values($map) : Map에서 모든 value를 List로 반환합니다.
+```SCSS
+$font-weights: ("regular": 400, "medium": 500, "bold": 700);
+map.values($font-weights); // 400, 500, 700
+```
 
