@@ -290,3 +290,93 @@ $url-image: "./img/image.png";
 - 함수와 비슷한 모양을 가지고 있으며, 입력 인자가 없을 경우 기본값을 설정하여 사용할 수 있다.
 - 다음 예시에서는 기본 값을 설정하되, 각 인자 값에 다른 입력값을 넣어 다른 결과가 나오게 하였다.  
 <img src="./assets/19-1.png" width="600" />
+
+
+## 조건문 - if
+- SCSS는 조건문을 지원합니다.
+- 두가지 방식의 if 방식이 있습니다.
+- 논리연산자를 이용해서 다양한 조건문을 만들 수 있습니다.
+
+## if(조건, 표현식1, 표현식2)
+- 삼항연산자(조건 ? 표현식1 : 표현식2)와 유사한 방식으로 동작하게 됩니다. 
+- 조건이 true일 경우 앞의 표현식, false일 경우 뒤의 표현식이 선택됩니다.
+```SCSSS
+div{
+    $width: 555px;
+    width: if($width>300px, 100px, 500px);  // $width변수가 300px보다 클 경우 100px로, 300px이하일 경우 500px로 적용됩니다.
+}
+```
+## @if, @else if, @else
+- 삼항연산자 방식과 다르게 조건을 여러가지 달 수 있습니다.
+
+```SCSS
+@if($widtn <780px){
+    //모바일
+}@else if($width< 1280px){
+    //태블릿
+}@else{
+    //데스크탑
+}
+```
+## 반복문 - @for, @each, @while
+- 스타일을 반복적으로 적용시킬 때 주로 사용합니다.
+
+## @for
+- @for는 through를 사용하는 형식과 to를 사용하는 형식으로 나뉩니다.
+- "@for $변수 from 시작 (to or through) 종료" 순으로 입력합니다.
+
+### through 방식
+- through 뒤의 숫자까지 포함해서 반복하게 됩니다.
+```SCSS
+@for $index from 1 through 3{
+    .through:nth-child(#{$index}){  // 1번부터 3번 자식까지 적용됩니다.
+        width: 20px * $index;
+    }   
+}
+```
+### to 방식
+- to 뒤의 숫자는 포함하지 않고 반복을 하게 됩니다.
+```SCSS
+@for $index from 1 to 3{   // 1번부터 2번 자식까지 적용됩니다.
+    .through:nth-child(#{$index}){
+        width: 20px * $index;
+    }   
+}
+```
+
+## @each
+- List나 Map의 요소들을 순서대로 꺼내면서 반복문 안의 내용을 실행할 수 있습니다.
+- 이미지가 많을 경우 배열에 담긴 이미지의 주소를 반복문으로 효율적으로 코드를 짤 수 있습니다.
+```SCSS
+$fruits: (apple, orange, banana, mango);
+.fruits{
+    @each $fruit in $fruits{
+        &.#{$fruit}{
+            background: url("/images/#{$fruit}.png");
+        } 
+    }
+}
+```
+## @while
+- 조건이 false가 될 때 까지 안의 내용을 반복합니다.
+- 무한 루프에 빠지지 않도록 코드를 짜야합니다.
+```SCSS
+$count: 6;
+@while $count >0{
+    .item-#{$count}{
+        width: 2px;
+    }
+    $count: $count-1;
+}
+
+```
+## 내장 함수
+- sass에서 기본적으로 제공하는 함수입니다.
+- 함수를 모두 외우지 않고 함수의 쓰임새만 알고 있으면 필요할 때 사용법을 찾아서 쓰면됩니다.
+
+## 자주 사용 될 수 있는 내장 함수
+- 크게 color함수, number함수, string함수, list함수, map함수가 있습니다.
+
+## color함수
+
+
