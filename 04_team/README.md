@@ -290,3 +290,224 @@ $url-image: "./img/image.png";
 - 함수와 비슷한 모양을 가지고 있으며, 입력 인자가 없을 경우 기본값을 설정하여 사용할 수 있다.
 - 다음 예시에서는 기본 값을 설정하되, 각 인자 값에 다른 입력값을 넣어 다른 결과가 나오게 하였다.  
 <img src="./assets/19-1.png" width="600" />
+
+## 재활용 - Mixin, Include 2
+- SCSS에서의 사용과 Sass에서의 사용에는 아래와 같은 차이가 있다.    
+  SCSS:  
+  ```scss
+  @mixin 믹스인이름{
+    스타일;
+  }
+
+  @mixin large-text{
+    font-size: 22px
+  }
+  ```
+  Sass:   
+  ```sass
+  =믹스인이름
+    스타일
+
+  =large-text
+    font-size:22px
+  ```
+- Mixin은 선택자를 포함할 수 있고, &와 같은 상위(부모) 요소 참조도 가능하다.   
+  SCSS:   
+  ```scss
+  @mixin large-text{
+    font:{
+      size: 22px
+    }
+    &::after{
+      content:"!!"
+    }
+  }
+  ```
+- 선언된 @mixin을 사용(포함)하기 위해서는 @include가 필요하다. 
+- SCSS와 다르게 Sass는 @include 대신 + 기호를 사용한다.
+  SCSS:
+  ```scss
+  @include 믹스인이름;
+  h1{
+    @include large-text;
+  }
+  ```
+  Sass:   
+  ```Sass
+  +믹스인이름
+  h1
+    +large-text
+  ```
+## 재활용 - 인수(Arguments)
+- Mixin은 함수처럼 인수(Arguments)를 가질 수 있다.
+- 매개변수(Parameters)는 변수의 한 종류로, 제공되는 여러 데이터 중 하나를 가리키기 위해 사용된다.  
+- 아래 예제에서 .box에서 dash-line안에 들어가는 1px과 red를 인수(Arguements)라고 한다.
+- 그 값을 @mixin에서 $width와 $color라는 변수가 받는데 이 변수들이 매개변수(Parameters)이다.
+  SCSS:
+  ```SCSS
+  @mixin dash-line($width, $color){
+    border: $width dashed $color;
+  }
+  .box1{ @include dash-line(1px, red);}
+  ```
+## 재활용 - 인수의 기본값 설정
+- 인수(Argument)는 기본값(default value)를 가질 수 있다.
+- 기본값을 설정하면, 매개변수가 받을 값이 없어도 에러가 나지 않는다.
+  ```SCSS
+  @mixin 믹스인이름($매개변수: 기본값){
+    스타일;
+  }
+
+  @mixin dash-line(&width: 1px, $color: black){
+    border: $width dashed &color;
+  }
+  ```
+## 재활용 - 키워드 인수
+- Mixin에 전달할 인수를 입력할 때, 어느 매개변수로 그 값을 할당할지 명시적으로 키워드(변수)를 입력하여 작성할 수 있다.
+- 별도의 인수 입력 순서를 필요로 하지 않아 편리하게 작성할 수 있다.
+- 단, 작성하지 않은 인수가 적용될 수 있도록 기본값을 설정해주는 것이 좋다.
+- 아래 예제에서 인수는 매개 변수B에 들어가고, 매개변수A는 들어오는 인수값이 없으니 기본값이 할당된다.
+  ```SCSS
+  @mixin 믹스인이름($매개변수A: 기본값, $매개변수B: 기본값){
+    스타일;
+  }
+
+  @include 믹스인이름($매개변수B: 인수);
+  ```
+## 재활용 - 가변 인수
+- 입력할 인수의 개수가 불확실할 때 사용한다.
+- 가변 인수는 매개변수 뒤에 ...을 붙인다.  
+- 기본 구조는 아래와 같고
+  ```scss
+  @mixin 믹스인이름($매개변수 ...){
+    스타일;
+  }
+
+  @include 믹스인이름(인수A, 인수B, 인수C);
+  ```
+- 배경이미지를 여러 개 받는 등의 경우에 사용될 수 있다.
+  ```scss
+  @mixin var (&w, &h, $bg...){
+    width: $w;
+    heigh: &h;
+    background: &bg;
+  }
+  .box{
+    @include var(
+      100px, 200px,
+      url("image/a.png") no-repeat 10px 20px,
+      url("image/b.png") no-repeat,
+      url("image/c.png")); 
+    }
+  }
+  ```
+- 위에서 인수를 받는 매개 변수에 ...을 사용하여 가변 인수를 사용했다.
+- 반대로 가변 인수를 전달할 값으로 사용할 수도 있다.
+- 매개변수 순서와 개수에 맞게 전달할 수 있다. 
+  italic, bold, 16px, sans-serif 이 리스트로 font-values에 들어가있는데 @include font($font-values...) 하게 되면, 리스트의 각 값이 하나하나의 인수로 할당된다.   
+  ```scss
+  div{
+    $font-values: italic, bold, 16px, sans-serif;
+    @include font($font-values...)
+  }
+  ```
+- 필요한 값만 키워드 인수로 변수에 담아 전달할 수 있다.
+  map data 형태로 style에는 italic, size에는 22px을 전달하고 나머지는 기본값을 사용한다.
+  ```scss
+  span{
+    font-values: (style: italic, size: 22px);
+    @include font($font-values...);
+  }
+  ```
+- 필요한 값만 키워드 인수로 전달할 수 있다.
+  map data 형태 그대로 전달한다.
+  ```scss
+  a{
+    @include font((weight: 900, family: monospace)...);
+  }
+  ```
+## 재활용 - Content
+  - 선언된 Mixin에 @content가 포함되어 있다면 해당 부분에 원하는 스타일 블록을 전달할 수 있다.
+  - 이를 통해 기존 Mixin이 가지고 있는 기능에 선택자나 속성을 추가할 수 있다.
+  - @include 안에 새로 추가할 스타일을 정의하고 @content로 그 스타일 블록을 기존 스타일에 전달하여 추가한다.
+    ```scss
+    @mixin 믹스인이름(){
+      스타일;
+      @content;
+    }
+    @include 믹스인이름(){
+      새로 추가할 스타일;
+    }
+    ```
+## 확장(Extend)
+- 특정 선택자가 다른 선택자의 모든 스타일을 가져야하는 경우 사용한다.
+- 아래의 예는 @extend를 이용해 .btn의 스타일을 btn-danger에도 적용시킨 것이다.
+  ```scss
+  @extend 선택자;
+
+  .btn{
+    paddind: 10px;
+    margin: 10px;
+    background: blue;
+  }
+  .btn-danger{
+    @extend .btn;
+    background: red;
+  }
+  ```
+## 확장을 추천하지 않는 이유
+- 위 SCSS를 컴파일하면 아래와 같다.
+  ```css
+  .btn, .btn-danger{
+    paddind: 10px;
+    margin: 10px;
+    background: blue;
+  }
+
+  .btn-danger{
+    background: red;
+  }
+  ``` 
+- .btn, .btn-danger와 같이 ,(쉼표)로 구분되는 다중 선택자(Multiple Selector)가 만들어진다.
+- 이처럼 @extend를 사용했을 때, @extend를 사용한 선택자가 어디에 다중 선택자로 추가될지를 고려해야한다.
+- 또한 .container .item .icon처럼 어디 안에 어디 안에 어디와 같이 의도하지 않게 선택자가 길어질 수 있다.
+- 이런 점 때문에 확장(extend) 기능은 부작용을 가지고 있다.
+- 따라서 확장의 사용은 권장하지 않으며, Mixin을 대체 기능으로 사용할 것을 권장한다.
+
+## 함수
+- 자신의 함수를 정의하여 사용할 수 있다.
+- Mixin과 유사하지만 반환하는 내용이 다름을 기억해야 한다.
+- Mixin은 지정한 스타일(Style)을 반환하는 반면,
+  ```scss
+  @mixin 믹스인이름($매개변수){
+    스타일;
+  }
+  ```
+- 함수는 보통 연산된(Computed) 특정 값을 @return 지시어를 통해 반환한다.
+  ```scss
+  @function 함수이름($매개변수)ㅖ
+    @return 값;
+  ```
+- Mixin은 @include 지시어를 사용하는 반면,
+  ```scss
+  @include 믹스인이름(인수);
+  ```
+- 함수는 함수 이름으로 바로 사용한다.   
+  인수가 없더라고 괄호를 열고 닫아줘야한다.
+  ```scss
+  함수이름(인수)
+  ```
+
+## 함수 - 함수 이름 중복
+- 함수는 @include라는 별도의 지시어 없이 사용하기 때문에 사용자가 지정한 함수와 내장함수(bulit-in-function)의 이름이 충돌할 수 있다.
+- 따라서 사용자가 지정한 함수에는 별도의 접두어를 붙여주는 것이 좋다.
+- 아래의 예시에는 red라는 이름의 내장함수가 이미 있어 extract라는 접두어를 붙여 extract-red라는 이름으로 사용자 지정함수를 만들었다.
+  ```scss
+  @fuction extract-red($color){
+    @return rgb(red($color), 0, 0);
+  }
+  div{
+    color: extract-red(#D55A93);
+  }
+  ```
+- 혹은 모든 내장 함수의 이름을 모두 알고 있을 수 없으므로 my-red()와 같이 특별한 접두어를 붙여 사용하는 방법도 있다.
